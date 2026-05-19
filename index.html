@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Virtual Lab — Area Between Curves</title>
+
+    <link rel="stylesheet" href="style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <!-- MathJax -->
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async id="mathjax-script"></script>
+
+    <!-- Desmos API -->
+    <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6" async></script>
+</head>
+<body>
+
+    <!-- ============ NAVIGATION ============ -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <span class="logo">∫ MathLab</span>
+            <div class="nav-links">
+                <a href="#quiz">Quiz</a>
+                <a href="#theory">Theory</a>
+                <a href="#lab">Interactive Lab</a>
+                <a href="#solution">Solution</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============ HERO ============ -->
+    <section id="hero">
+        <div class="hero-bg">
+            <span class="float-symbol" style="top:10%;left:5%;animation-delay:0s;">∫</span>
+            <span class="float-symbol" style="top:20%;left:85%;animation-delay:2s;">∑</span>
+            <span class="float-symbol" style="top:60%;left:10%;animation-delay:4s;">π</span>
+            <span class="float-symbol" style="top:75%;left:75%;animation-delay:1s;">√</span>
+            <span class="float-symbol" style="top:35%;left:50%;animation-delay:3s;font-size:3rem;">Δ</span>
+            <span class="float-symbol" style="top:80%;left:40%;animation-delay:5s;">∞</span>
+            <span class="float-symbol" style="top:15%;left:30%;animation-delay:6s;">∂</span>
+            <span class="float-symbol" style="top:65%;left:60%;animation-delay:2.5s;">≈</span>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-badge">Interactive Virtual Laboratory</div>
+            <h1>Area Between Curves</h1>
+            <h2>Using Definite Integration</h2>
+            <p>
+                A visual, interactive approach to understanding how definite integrals
+                compute the area enclosed between two functions.
+            </p>
+            <button class="btn-hero" onclick="document.getElementById('theory').scrollIntoView({behavior:'smooth'})">
+                Start Learning &downarrow;
+            </button>
+        </div>
+
+        <div class="scroll-indicator">
+            <span>Scroll to explore</span>
+            <div class="scroll-dot"></div>
+        </div>
+    </section>
+
+    <!-- ============ THEORY ============ -->
+    <section id="theory" class="section">
+        <div class="section-header">
+            <span class="section-number">01</span>
+            <h2>Theoretical Foundation</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="theory-grid">
+            <!-- Card 1 -->
+            <div class="theory-card glass">
+                <div class="card-icon">∬</div>
+                <h3>Double Integration</h3>
+                <p>
+                    A double integral $\displaystyle \iint_R f(x,y)\,dA$ extends single
+                    integration to functions over a two-dimensional region. It accumulates
+                    quantities across an area by integrating over both $x$ and $y$ variables.
+                </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="theory-card glass">
+                <div class="card-icon">⊞</div>
+                <h3>Area of a 2D Region</h3>
+                <p>
+                    The area of a bounded planar region can be computed using a double
+                    integral. For a vertical region between two curves:
+                </p>
+                <div class="card-formula">
+                    $$ A = \iint_R 1\,dA $$
+                    $$ A = \int_a^b \int_{g(x)}^{f(x)} dy\,dx $$
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="theory-card glass">
+                <div class="card-icon">⇆</div>
+                <h3>Iterated Integrals</h3>
+                <p>
+                    A double integral is evaluated as an iterated integral by integrating
+                    one variable at a time. The inner integral is evaluated first,
+                    followed by the outer integral.
+                </p>
+                <div class="card-formula">
+                    $$ \int_a^b \int_{g(x)}^{f(x)} f(x,y)\,dy\,dx $$
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="theory-card glass">
+                <div class="card-icon">⨯</div>
+                <h3>Regions &amp; Limits of Integration</h3>
+                <p>
+                    The limits describe the boundaries of the region $R$. For a
+                    vertically simple region: $g(x) \le y \le f(x)$, $a \le x \le b$.
+                    Choosing correct limits is essential for evaluating double integrals.
+                </p>
+            </div>
+        </div>
+
+        <!-- Formula highlight -->
+        <div class="formula-highlight glass">
+            <div class="formula-label">The General Double Integral Formula</div>
+            <div class="formula-display">
+                $\displaystyle A \;=\; \iint_R 1\,dA \;=\; \int_{a}^{b} \int_{g(x)}^{f(x)} dy\,dx$
+            </div>
+            <p>where $y$ varies from the <strong>lower</strong> curve $g(x)$ to the <strong>upper</strong> curve $f(x)$, and $x$ varies from $a$ to $b$.</p>
+        </div>
+    </section>
+
+    <!-- ============ INTERACTIVE LAB ============ -->
+    <section id="lab" class="section">
+        <div class="section-header">
+            <span class="section-number">02</span>
+            <h2>Interactive Laboratory</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="lab-layout">
+            <!-- Controls -->
+            <div class="lab-controls glass">
+                <h3>Double Integral Controls</h3>
+
+                <div class="control-group">
+                    <label for="func-fxy">
+                        <span class="control-label-inline"><span class="label-dot blue"></span>Integrand</span> $f(x,y)$
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" id="func-fxy" value="1" spellcheck="false" />
+                        <span class="input-hint">e.g. x*y, x^2+y^2, sin(x*y)</span>
+                    </div>
+                </div>
+
+                <div class="control-divider"></div>
+
+                <div class="control-group">
+                    <label>Outer Integral Limits $(x)$</label>
+                </div>
+
+                <div class="control-group">
+                    <label for="outer-a">Lower $x$</label>
+                    <div class="input-wrapper input-num">
+                        <input type="number" id="outer-a" value="-1" step="any" />
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="outer-b">Upper $x$</label>
+                    <div class="input-wrapper input-num">
+                        <input type="number" id="outer-b" value="2" step="any" />
+                    </div>
+                </div>
+
+                <div class="control-divider"></div>
+
+                <div class="control-group">
+                    <label>Inner Integral Limits $(y)$</label>
+                </div>
+
+                <div class="control-group">
+                    <label for="inner-low">
+                        <span class="control-label-inline"><span class="label-dot teal"></span>Lower</span> $y = g_1(x)$
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" id="inner-low" value="x^2" spellcheck="false" />
+                        <span class="input-hint">e.g. 0, x^2, sin(x)</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="inner-high">
+                        <span class="control-label-inline"><span class="label-dot blue"></span>Upper</span> $y = g_2(x)$
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" id="inner-high" value="x+2" spellcheck="false" />
+                        <span class="input-hint">e.g. 1, x+1, sqrt(x)</span>
+                    </div>
+                </div>
+
+                <div class="control-btn-group">
+                    <button class="btn-primary" id="btn-plot">Plot Region</button>
+                    <button class="btn-secondary" id="btn-reset">Reset</button>
+                </div>
+
+                <div class="control-divider"></div>
+
+                <div class="control-group">
+                    <label for="view-min">View $x_{\min}$</label>
+                    <div class="input-wrapper input-num">
+                        <input type="number" id="view-min" value="-5" step="any" />
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="view-max">View $x_{\max}$</label>
+                    <div class="input-wrapper input-num">
+                        <input type="number" id="view-max" value="5" step="any" />
+                    </div>
+                </div>
+
+                <button class="btn-primary btn-solution" id="btn-solution">
+                    Show Solution
+                </button>
+            </div>
+
+            <!-- Graph -->
+            <div class="lab-graph">
+                <div id="desmos-calculator"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SOLUTION ============ -->
+    <section id="solution" class="section">
+        <div class="section-header">
+            <span class="section-number">03</span>
+            <h2>Step-by-Step Solution</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div id="solution-placeholder" class="glass">
+            <div class="placeholder-icon">📐</div>
+            <h3>Ready to learn</h3>
+            <p>Set your functions and limits in the lab above, then click <strong>"Show Solution"</strong> to see a detailed step-by-step breakdown.</p>
+        </div>
+
+        <div id="solution-steps" style="display:none;"></div>
+    </section>
+
+    <!-- ============ QUIZ ============ -->
+    <section id="quiz" class="section">
+        <div class="section-header">
+            <span class="section-number">04</span>
+            <h2>MCQ Quiz</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <!-- Quiz Intro Screen -->
+        <div id="quiz-intro" class="glass">
+            <div class="intro-icon">∬</div>
+            <h3>MCQ Quiz — Double Integration</h3>
+            <p class="intro-desc">Test your understanding of double integration, iterated integrals, regions of integration, and area between curves through 10 conceptual and numerical MCQs.</p>
+            <div class="intro-details">
+                <div class="intro-detail">
+                    <span class="intro-label">Total Questions</span>
+                    <span class="intro-value">10</span>
+                </div>
+                <div class="intro-detail">
+                    <span class="intro-label">Duration</span>
+                    <span class="intro-value">30 Minutes</span>
+                </div>
+                <div class="intro-detail">
+                    <span class="intro-label">Type</span>
+                    <span class="intro-value">Multiple Choice</span>
+                </div>
+                <div class="intro-detail">
+                    <span class="intro-label">Marking</span>
+                    <span class="intro-value">1 point each</span>
+                </div>
+            </div>
+            <div class="intro-instructions">
+                <strong>Instructions</strong>
+                <ul>
+                    <li>Only one option can be selected.</li>
+                    <li>Use the palette to navigate questions.</li>
+                    <li>You may mark questions for review.</li>
+                    <li>Quiz auto-submits when time expires.</li>
+                </ul>
+            </div>
+            <button class="btn-primary btn-start-quiz" id="btn-start-quiz">Start Quiz</button>
+        </div>
+
+        <!-- Quiz Container (hidden until start) -->
+        <div id="quiz-container" style="display:none;">
+            <div id="quiz-layout">
+                <div id="quiz-palette" class="glass">
+                    <h3>Question Palette</h3>
+                    <div id="palette-grid"></div>
+                    <div class="palette-legend">
+                        <div class="legend-item"><span class="legend-dot dot-white"></span> Not Visited</div>
+                        <div class="legend-item"><span class="legend-dot dot-violet"></span> Visited</div>
+                        <div class="legend-item"><span class="legend-dot dot-green"></span> Answered</div>
+                        <div class="legend-item"><span class="legend-dot dot-red"></span> Marked</div>
+                    </div>
+                </div>
+
+                <div id="quiz-panel" class="glass">
+                    <div id="quiz-question">
+                        <div id="q-header">
+                            <span id="q-number"></span>
+                            <span class="q-status-marked" style="display:none;">Marked for Review</span>
+                            <span id="q-timer">30:00</span>
+                        </div>
+                        <div id="q-text"></div>
+                        <div id="q-options"></div>
+                    </div>
+                    <div id="quiz-nav">
+                        <button class="btn-secondary" id="btn-prev">Previous</button>
+                        <button class="btn-secondary" id="btn-mark">Mark for Review</button>
+                        <button class="btn-secondary" id="btn-clear">Clear Response</button>
+                        <button class="btn-primary" id="btn-next">Next</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="quiz-analysis" style="display:none;"></div>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+        <div class="footer-inner">
+            <p>Interactive Virtual Mathematics Laboratory &mdash; Area Between Curves using Definite Integration</p>
+            <p class="footer-small">Built with the Desmos Graphing Calculator API &amp; MathJax</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
