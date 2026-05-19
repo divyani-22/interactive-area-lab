@@ -192,7 +192,7 @@ Building this project helped me improve my understanding of:
 
 # 👨‍💻 Developed By
 
-## **Divyani Ppalkar**
+## **Divyani Papalkar**
 
 ---
 
